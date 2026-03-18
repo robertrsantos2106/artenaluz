@@ -1,0 +1,1337 @@
+<!doctype html>
+<html lang="pt-BR" class="h-full">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arte na Luz - Abajures Artesanais</title>
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+    <script src="/_sdk/element_sdk.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&amp;display=swap"
+        rel="stylesheet">
+    <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .font-heading {
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-weight: 700;
+        }
+
+        .font-body {
+            font-family: 'Montserrat', Arial, sans-serif;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .slide-up {
+            animation: slideUp 0.6s ease forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card-hover {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .btn-gold {
+            background: #F4C542;
+            color: #fff;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .btn-gold:hover {
+            background: #E07A5F;
+            transform: scale(1.03);
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: #E07A5F;
+            color: #fff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .overlay {
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .nav-link {
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: #F4C542;
+        }
+
+        .img-pattern {
+            background: linear-gradient(135deg, #F4C542 25%, transparent 25%) -50px 0, linear-gradient(225deg, #F4C542 25%, transparent 25%) -50px 0, linear-gradient(315deg, #F4C542 25%, transparent 25%), linear-gradient(45deg, #F4C542 25%, transparent 25%);
+            background-size: 40px 40px;
+            opacity: 0.06;
+        }
+
+        .gallery-thumb {
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .gallery-thumb:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .tab-active {
+            border-bottom: 3px solid #F4C542;
+            color: #2B2B2B;
+            font-weight: 700;
+        }
+
+        .tab-inactive {
+            border-bottom: 3px solid transparent;
+            color: #888;
+        }
+
+        .tab-btn {
+            transition: all 0.3s;
+            padding-bottom: 8px;
+        }
+
+        .tab-btn:hover {
+            color: #F4C542;
+        }
+
+        .schedule-info {
+            background: linear-gradient(135deg, #FFF9E6, #FFF5F0);
+            border-left: 4px solid #F4C542;
+        }
+
+        .calendar-wrapper {
+            margin-top: 1rem;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .calendar-header button {
+            background: #f0f0f0;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+
+        .calendar-header button:hover {
+            background: #e0e0e0;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 6px;
+        }
+
+        .calendar-day-header {
+            text-align: center;
+            font-size: 11px;
+            font-weight: 700;
+            color: #888;
+            padding: 8px 0;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            border: 2px solid #F2E9E4;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #fff;
+            width: 100%;
+            min-width: 32px;
+        }
+
+        .calendar-day:hover:not(.disabled) {
+            border-color: #F4C542;
+            transform: scale(1.05);
+        }
+
+        .calendar-day.disabled {
+            color: #ccc;
+            cursor: not-allowed;
+            background: #fafafa;
+        }
+
+        .calendar-day.selected {
+            background: #F4C542;
+            color: #fff;
+            border-color: #F4C542;
+            font-weight: 700;
+        }
+
+        .calendar-day.available {
+            color: #2B2B2B;
+        }
+
+        .calendar-days {
+            display: contents;
+        }
+
+        .theme-btn {
+            border: none;
+            cursor: pointer;
+        }
+
+        .theme-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 60;
+            background: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .theme-modal.active {
+            display: flex;
+        }
+
+        .theme-modal-content {
+            background: #fff;
+            border-radius: 2rem;
+            max-width: 90%;
+            width: 100%;
+            max-height: 90vh;
+            overflow: auto;
+            padding: 2rem;
+            animation: slideUp 0.3s ease;
+            position: relative;
+        }
+
+        .theme-images-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .theme-image-item {
+            aspect-ratio: 1;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s, border 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #f5f5f5, #e8e8e8);
+            border: 2px solid transparent;
+            font-weight: 700;
+        }
+
+        .theme-image-item:hover {
+            transform: scale(1.08);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            border-color: #F4C542;
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: #f0f0f0;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+            z-index: 70;
+        }
+
+        .modal-close-btn:hover {
+            background: #e0e0e0;
+        }
+    </style>
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body class="font-body h-full" style="background:#FFFFFF; color:#2B2B2B;">
+    <div id="app" class="w-full h-full overflow-auto"><!-- HEADER -->
+        <header id="header" class="sticky top-0 z-50 bg-white shadow-sm">
+            <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between"><a href="#home"
+                    class="font-heading text-2xl font-bold flex items-center gap-2" style="color:#2B2B2B;"> <span
+                        style="color:#F4C542;">✦</span> <span id="nav-store-name">Arte na Luz</span> </a>
+                <nav class="hidden md:flex gap-6 text-sm font-semibold" style="color:#2B2B2B;"><a href="#home"
+                        class="nav-link">Início</a> <a href="#about" class="nav-link">Sobre</a> <a href="#products"
+                        class="nav-link">Produtos</a> <a href="#gallery" class="nav-link">Galeria</a> <a
+                        href="#showcase" class="nav-link">Estante</a> <a href="#contact" class="nav-link">Contato</a>
+                </nav>
+                <div class="flex items-center gap-4"><button id="cart-btn"
+                        class="relative p-2 rounded-full hover:bg-gray-100 transition" aria-label="Carrinho"> <i
+                            data-lucide="shopping-bag" style="width:24px;height:24px;color:#2B2B2B;"></i> <span
+                            id="cart-count" class="cart-badge hidden">0</span> </button> <button id="mobile-menu-btn"
+                        class="md:hidden p-2" aria-label="Menu"> <i data-lucide="menu"
+                            style="width:24px;height:24px;color:#2B2B2B;"></i> </button>
+                </div>
+            </div>
+            <div id="mobile-nav" class="hidden md:hidden bg-white border-t px-4 pb-4">
+                <div class="flex flex-col gap-3 pt-3 text-sm font-semibold" style="color:#2B2B2B;"><a href="#home"
+                        class="nav-link py-1">Início</a> <a href="#about" class="nav-link py-1">Sobre</a> <a
+                        href="#products" class="nav-link py-1">Produtos</a> <a href="#gallery"
+                        class="nav-link py-1">Galeria</a> <a href="#showcase" class="nav-link py-1">Estante</a> <a
+                        href="#contact" class="nav-link py-1">Contato</a>
+                </div>
+            </div>
+        </header><!-- HERO -->
+        <section id="home" class="relative overflow-hidden"
+            style="background: linear-gradient(135deg, #FFFDF5 0%, #FFF9E6 50%, #FFF5F0 100%);">
+            <div class="absolute inset-0 img-pattern"></div>
+            <div class="relative max-w-6xl mx-auto px-4 py-20 md:py-32 text-center">
+                <p class="text-sm font-semibold tracking-widest uppercase mb-4 fade-in"
+                    style="color:#E07A5F; animation-delay:0.1s;">Artesanato com alma</p>
+                <h1 id="hero-title" class="font-heading text-4xl md:text-6xl font-bold mb-4 slide-up"
+                    style="color:#2B2B2B;">Arte na Luz</h1>
+                <p id="hero-sub" class="text-lg md:text-xl mb-8 slide-up max-w-xl mx-auto"
+                    style="color:#666; animation-delay:0.2s;">Abajures artesanais em PVC que transformam luz em arte
+                    para iluminar seu lar</p>
+                <div class="flex flex-wrap gap-4 justify-center slide-up" style="animation-delay:0.4s;"><a
+                        href="#products" class="btn-gold px-8 py-3 rounded-full font-bold text-sm shadow-lg">Ver
+                        Produtos</a> <a href="#gallery"
+                        class="px-8 py-3 rounded-full font-bold text-sm border-2 transition hover:bg-gray-50"
+                        style="border-color:#F4C542; color:#2B2B2B;">Ver Galeria</a>
+                </div>
+                <div class="mt-12 flex justify-center slide-up" style="animation-delay:0.5s;">
+                    <svg width="120" height="160" viewbox="0 0 120 160" fill="none">
+                        <ellipse cx="60" cy="140" rx="35" ry="8" fill="#F4C542" opacity="0.15" />
+                        <rect x="50" y="30" width="20" height="90" rx="10" fill="#F4C542" opacity="0.3" />
+                        <rect x="55" y="25" width="10" height="100" rx="5" fill="#F4C542" opacity="0.5" />
+                        <circle cx="60" cy="20" r="12" fill="#F4C542" opacity="0.8" />
+                        <circle cx="60" cy="20" r="6" fill="#FFF" opacity="0.9" />
+                        <path d="M40 120 Q60 135 80 120" stroke="#E07A5F" stroke-width="2" fill="none" opacity="0.4" />
+                    </svg>
+                </div>
+            </div>
+        </section><!-- ABOUT -->
+        <section id="about" style="background:#F2E9E4;">
+            <div class="max-w-6xl mx-auto px-4 py-16 md:py-24">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <p class="text-sm font-semibold tracking-widest uppercase mb-2" style="color:#E07A5F;">Nossa
+                            História</p>
+                        <h2 class="font-heading text-3xl md:text-4xl font-bold mb-6" style="color:#2B2B2B;">Sobre a Arte
+                            na Luz</h2>
+                        <p id="about-text" class="leading-relaxed mb-4" style="color:#555;">A Arte na Luz nasceu da
+                            paixão por transformar materiais simples em obras de arte funcionais. Cada abajur é
+                            cuidadosamente feito à mão, utilizando canos de PVC e técnicas artesanais para criar peças
+                            únicas que combinam design, iluminação e personalidade. Nosso trabalho une criatividade e
+                            dedicação, levando luz e beleza para cada ambiente. Cada peça conta uma história e carrega o
+                            carinho de quem faz arte com as próprias mãos.</p>
+                        <div class="flex gap-8 mt-6">
+                            <div class="text-center">
+                                <p class="font-heading text-2xl font-bold" style="color:#F4C542;">100+</p>
+                                <p class="text-xs mt-1" style="color:#888;">Peças vendidas</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="font-heading text-2xl font-bold" style="color:#F4C542;">50+</p>
+                                <p class="text-xs mt-1" style="color:#888;">Clientes felizes</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="font-heading text-2xl font-bold" style="color:#F4C542;">2+</p>
+                                <p class="text-xs mt-1" style="color:#888;">Anos de arte</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-center">
+                        <div class="relative w-72 h-80 rounded-2xl overflow-hidden shadow-xl"
+                            style="background: linear-gradient(135deg, #F4C542 0%, #E07A5F 100%);">
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <svg width="150" height="200" viewbox="0 0 150 200" fill="none">
+                                    <rect x="55" y="40" width="40" height="120" rx="20" fill="#FFF" opacity="0.3" />
+                                    <circle cx="75" cy="35" r="18" fill="#FFF" opacity="0.5" />
+                                    <circle cx="75" cy="35" r="9" fill="#FFF" opacity="0.9" />
+                                    <ellipse cx="75" cy="170" rx="40" ry="10" fill="#FFF" opacity="0.2" />
+                                    <path d="M45 150 Q75 168 105 150" stroke="#FFF" stroke-width="2" fill="none"
+                                        opacity="0.5" />
+                                    <path d="M50 140 Q75 155 100 140" stroke="#FFF" stroke-width="1.5" fill="none"
+                                        opacity="0.3" />
+                                </svg>
+                            </div>
+                            <div class="absolute bottom-4 left-4 right-4 text-center">
+                                <p class="text-white text-sm font-bold opacity-90">Feito à mão com amor ✦</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section><!-- PRODUCTS -->
+        <section id="products" style="background:#FFFFFF;">
+            <div class="max-w-6xl mx-auto px-4 py-16 md:py-24">
+                <div class="text-center mb-12">
+                    <p class="text-sm font-semibold tracking-widest uppercase mb-2" style="color:#E07A5F;">Nossos
+                        Produtos</p>
+                    <h2 class="font-heading text-3xl md:text-4xl font-bold" style="color:#2B2B2B;">Escolha seu Abajur
+                    </h2>
+                    <p class="mt-3 max-w-lg mx-auto" style="color:#888;">Cada peça é única. Escolha o tamanho e a imagem
+                        que mais combina com você.</p>
+                </div>
+                <div class="flex justify-center gap-8 mb-10 border-b" style="border-color:#eee;"><button
+                        class="tab-btn tab-active text-sm font-semibold" data-tab="pronta-entrega"> <i
+                            data-lucide="package"
+                            style="width:16px;height:16px;display:inline;vertical-align:middle;margin-right:4px;"></i>
+                        Pronta Entrega </button> <button class="tab-btn tab-inactive text-sm font-semibold"
+                        data-tab="agendamento"> <i data-lucide="calendar"
+                            style="width:16px;height:16px;display:inline;vertical-align:middle;margin-right:4px;"></i>
+                        Agendamento </button>
+                </div>
+                <div id="tab-pronta-entrega" class="tab-content">
+                    <div class="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+                        <div class="bg-white rounded-2xl p-6 card-hover"
+                            style="border:1px solid #F2E9E4; box-shadow: 0 4px 15px rgba(0,0,0,0.06);">
+                            <div class="w-full h-48 rounded-xl mb-4 flex items-center justify-center"
+                                style="background: linear-gradient(135deg,#FFF9E6,#FFF5F0);">
+                                <svg width="80" height="120" viewbox="0 0 80 120">
+                                    <rect x="20" y="15" width="40" height="85" rx="20" fill="#F4C542" opacity="0.5" />
+                                    <circle cx="40" cy="12" r="10" fill="#F4C542" opacity="0.8" />
+                                    <circle cx="40" cy="12" r="5" fill="#FFF" />
+                                    <ellipse cx="40" cy="108" rx="28" ry="6" fill="#E07A5F" opacity="0.2" />
+                                </svg>
+                            </div><span class="text-xs font-bold px-3 py-1 rounded-full"
+                                style="background:#FFF9E6;color:#F4C542;">Grosso</span>
+                            <h3 class="font-heading text-xl font-bold mt-3" style="color:#2B2B2B;">Abajur Grande (PVC
+                                Grosso)</h3>
+                            <p class="text-sm mt-2" style="color:#888;">Cano maior, ideal para ambientes amplos.
+                                Iluminação potente e design marcante.</p>
+                            <div class="flex items-center justify-between mt-4">
+                                <p class="font-heading text-2xl font-bold" style="color:#E07A5F;">R$ 195,00</p><button
+                                    class="btn-gold px-5 py-2 rounded-full text-sm font-bold add-to-cart-btn"
+                                    data-name="Abajur Grande (Grosso)" data-price="195" data-type="pronta-entrega"> <i
+                                        data-lucide="shopping-bag"
+                                        style="width:14px;height:14px;display:inline;vertical-align:middle;margin-right:4px;"></i>
+                                    Comprar </button>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-2xl p-6 card-hover"
+                            style="border:1px solid #F2E9E4; box-shadow: 0 4px 15px rgba(0,0,0,0.06);">
+                            <div class="w-full h-48 rounded-xl mb-4 flex items-center justify-center"
+                                style="background: linear-gradient(135deg,#FFF9E6,#FFF5F0);">
+                                <svg width="60" height="120" viewbox="0 0 60 120">
+                                    <rect x="18" y="15" width="24" height="85" rx="12" fill="#E07A5F" opacity="0.4" />
+                                    <circle cx="30" cy="12" r="8" fill="#E07A5F" opacity="0.7" />
+                                    <circle cx="30" cy="12" r="4" fill="#FFF" />
+                                    <ellipse cx="30" cy="108" rx="22" ry="5" fill="#F4C542" opacity="0.2" />
+                                </svg>
+                            </div><span class="text-xs font-bold px-3 py-1 rounded-full"
+                                style="background:#FFF5F0;color:#E07A5F;">Fino</span>
+                            <h3 class="font-heading text-xl font-bold mt-3" style="color:#2B2B2B;">Abajur Delicado (PVC
+                                Fino)</h3>
+                            <p class="text-sm mt-2" style="color:#888;">Cano mais fino, perfeito para cantinhos
+                                especiais. Elegância e suavidade.</p>
+                            <div class="flex items-center justify-between mt-4">
+                                <p class="font-heading text-2xl font-bold" style="color:#E07A5F;">R$ 145,00</p><button
+                                    class="btn-gold px-5 py-2 rounded-full text-sm font-bold add-to-cart-btn"
+                                    data-name="Abajur Delicado (Fino)" data-price="145" data-type="pronta-entrega"> <i
+                                        data-lucide="shopping-bag"
+                                        style="width:14px;height:14px;display:inline;vertical-align:middle;margin-right:4px;"></i>
+                                    Comprar </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="tab-agendamento" class="tab-content hidden">
+                    <div class="schedule-info rounded-xl p-5 mb-8 max-w-3xl mx-auto">
+                        <div class="flex items-start gap-3"><i data-lucide="info"
+                                style="width:20px;height:20px;color:#F4C542;flex-shrink:0;margin-top:2px;"></i>
+                            <div>
+                                <p class="font-bold text-sm" style="color:#2B2B2B;">Como funciona o agendamento?</p>
+                                <p class="text-sm mt-1" style="color:#666;">Escolha o abajur e a imagem desejada. O
+                                    prazo mínimo é de <strong>7 dias</strong>. Cobramos <strong>50% do valor como
+                                        sinal</strong> e o restante na entrega.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+                        <div class="bg-white rounded-2xl p-6 card-hover"
+                            style="border:1px solid #F2E9E4; box-shadow: 0 4px 15px rgba(0,0,0,0.06);">
+                            <div class="w-full h-48 rounded-xl mb-4 flex items-center justify-center"
+                                style="background: linear-gradient(135deg,#FFF9E6,#FFF5F0);">
+                                <svg width="80" height="120" viewbox="0 0 80 120">
+                                    <rect x="20" y="15" width="40" height="85" rx="20" fill="#F4C542" opacity="0.5" />
+                                    <circle cx="40" cy="12" r="10" fill="#F4C542" opacity="0.8" />
+                                    <circle cx="40" cy="12" r="5" fill="#FFF" />
+                                    <ellipse cx="40" cy="108" rx="28" ry="6" fill="#E07A5F" opacity="0.2" />
+                                </svg>
+                            </div>
+                            <div class="flex gap-2 mb-3"><span class="text-xs font-bold px-3 py-1 rounded-full"
+                                    style="background:#FFF9E6;color:#F4C542;">Grosso</span> <span
+                                    class="text-xs font-bold px-3 py-1 rounded-full"
+                                    style="background:#E07A5F;color:#FFF;">Sob encomenda</span>
+                            </div>
+                            <h3 class="font-heading text-xl font-bold" style="color:#2B2B2B;">Abajur Grande (PVC Grosso)
+                            </h3>
+                            <p class="text-sm mt-2" style="color:#888;">Escolha a imagem que quiser! Prazo mínimo: 7
+                                dias.</p>
+                            <div class="mt-3 p-3 rounded-lg" style="background:#FFF9E6;">
+                                <p class="text-xs" style="color:#888;">Valor total: <strong style="color:#2B2B2B;">R$
+                                        195,00</strong></p>
+                                <p class="text-xs mt-1" style="color:#E07A5F;font-weight:700;">Sinal (50%): R$ 97,50</p>
+                            </div>
+                            <div class="mt-4"><label class="text-xs font-bold block mb-1" style="color:#2B2B2B;">Escolha
+                                    a imagem:</label> <select
+                                    class="schedule-image-select w-full p-2 rounded-lg border text-sm"
+                                    style="border-color:#F2E9E4;">
+                                    <option value="">Selecione uma imagem...</option>
+                                    <option value="Paisagem Natural">🌿 Paisagem Natural</option>
+                                    <option value="Flores Tropicais">🌺 Flores Tropicais</option>
+                                    <option value="Mandalas">🔮 Mandalas</option>
+                                    <option value="Animais">🦋 Animais</option>
+                                    <option value="Geométrico">💎 Geométrico</option>
+                                    <option value="Abstrato">🎨 Abstrato</option>
+                                    <option value="Religioso">✝️ Religioso</option>
+                                    <option value="Personalizado">📸 Personalizado (enviar foto)</option>
+                                </select>
+                            </div>
+                            <div class="calendar-wrapper">
+                                <label class="text-xs font-bold block mb-2" style="color:#2B2B2B;">📅 Data de Entrega
+                                    (mín. 7 dias):</label>
+                                <div class="calendar-container" data-calendar="grosso-agendamento">
+                                    <div class="calendar-header">
+                                        <button type="button" class="prev-month" aria-label="Mês anterior"><i
+                                                data-lucide="chevron-left" style="width:16px;height:16px;"></i></button>
+                                        <span class="calendar-month-year" style="color:#2B2B2B;"></span> <button
+                                            type="button" class="next-month" aria-label="Próximo mês"><i
+                                                data-lucide="chevron-right"
+                                                style="width:16px;height:16px;"></i></button>
+                                    </div>
+                                    <div class="calendar-grid">
+                                        <div class="calendar-day-header">
+                                            Dom
+                                        </div>
+                                        <div class="calendar-day-header">
+                                            Seg
+                                        </div>
+                                        <div class="calendar-day-header">
+                                            Ter
+                                        </div>
+                                        <div class="calendar-day-header">
+                                            Qua
+                                        </div>
+                                        <div class="calendar-day-header">
+                                            Qui
+                                        </div>
+                                        <div class="calendar-day-header">
+                                            Sex
+                                        </div>
+                                        <div class="calendar-day-header">
+                                            Sab
+                                        </div>
+                                        <div class="calendar-days"></div>
+                                    </div>
+                                </div><input type="hidden" class="selected-date" value="">
+                                <p class="text-xs mt-2" style="color:#888;" id="selected-date-grosso"></p>
+                            </div><button class="btn-gold w-full py-3 rounded-full text-sm font-bold mt-4 schedule-btn"
+                                data-name="Abajur Grande (Grosso)" data-price="195" data-signal="97.50"> <i
+                                    data-lucide="calendar-plus"
+                                    style="width:14px;height:14px;display:inline;vertical-align:middle;margin-right:4px;"></i>
+                                Agendar — Sinal R$ 97,50 </button>
+                        </div>
+                        <div class="bg-white rounded-2xl p-6 card-hover"
+                            style="border:1px solid #F2E9E4; box-shadow: 0 4px 15px rgba(0,0,0,0.06);">
+                            <div class="w-full h-48 rounded-xl mb-4 flex items-center justify-center"
+                                style="background: linear-gradient(135deg,#FFF9E6,#FFF5F0);">
+                                <svg width="60" height="120" viewbox="0 0 60 120">
+                                    <rect x="18" y="15" width="24" height="85" rx="12" fill="#E07A5F" opacity="0.4" />
+                                    <circle cx="30" cy="12" r="8" fill="#E07A5F" opacity="0.7" />
+                                    <circle cx="30" cy="12" r="4" fill="#FFF" />
+                                    <ellipse cx="30" cy="108" rx="22" ry="5" fill="#F4C542" opacity="0.2" />
+                                </svg>
+                            </div>
+                            <div class="flex gap-2 mb-3"><span class="text-xs font-bold px-3 py-1 rounded-full"
+                                    style="background:#FFF5F0;color:#E07A5F;">Fino</span> <span
+                                    class="text-xs font-bold px-3 py-1 rounded-full"
+                                    style="background:#E07A5F;color:#FFF;">Sob encomenda</span>
+                            </div>
+                            <h3 class="font-heading text-xl font-bold" style="color:#2B2B2B;">Abajur Delicado (PVC Fino)
+                            </h3>
+                            <p class="text-sm mt-2" style="color:#888;">Escolha a imagem que quiser! Prazo mínimo: 7
+                                dias.</p>
+                            <div class="mt-3 p-3 rounded-lg" style="background:#FFF5F0;">
+                                <p class="text-xs" style="color:#888;">Valor total: <strong style="color:#2B2B2B;">R$
+                                        145,00</strong></p>
+                                <p class="text-xs mt-1" style="color:#E07A5F;font-weight:700;">Sinal (50%): R$ 72,50</p>
+                            </div>
+                            <div class="mt-4"><label class="text-xs font-bold block mb-1" style="color:#2B2B2B;">Escolha
+                                    a imagem:</label> <select
+                                    class="schedule-image-select w-full p-2 rounded-lg border text-sm"
+                                    style="border-color:#F2E9E4;">
+                                    <option value="">Selecione uma imagem...</option>
+                                    <option value="Paisagem Natural">🌿 Paisagem Natural</option>
+                                    <option value="Flores Tropicais">🌺 Flores Tropicais</option>
+                                    <option value="Mandalas">🔮 Mandalas</option>
+                                    <option value="Animais">🦋 Animais</option>
+                                    <option value="Geométrico">💎 Geométrico</option>
+                                    <option value="Abstrato">🎨 Abstrato</option>
+                                    <option value="Religioso">✝️ Religioso</option>
+                                    <option value="Personalizado">📸 Personalizado (enviar foto)</option>
+                                </select>
+                            </div>
+                            <div class="calendar-wrapper">
+                                <label class="text-xs font-bold block mb-2" style="color:#2B2B2B;">📅 Data de Entrega
+                                    (mín. 7 dias):</label>
+                                <div class="calendar-container" data-calendar="fino-agendamento">
+                                    <div class="calendar-header">
+                                        <button type="button" class="prev-month" aria-label="Mês anterior"><i
+                                                data-lucide="chevron-left" style="width:16px;height:16px;"></i></button>
+                                        <span class="calendar-month-year" style="color:#2B2B2B;"></span> <button
+                                            type="button" class="next-month" aria-label="Próximo mês"><i
+                                                data-lucide="chevron-right"
+                                                style="width:16px;height:16px;"></i></button>
+                                    </div>
+                                    <div class="calendar-grid">
+                                        <div class="calendar-day-header">
+                                            Dom
+                                        </div>
+                                        <div class="calendar-day-header">
+                                            Seg
+                                        </div>
+                                        <div class="calendar-day-header">
+                                            Ter
+                                        </div>
+                                        <div class="calendar-day-header">
+                                            Qua
+                                        </div>
+                                        <div class="calendar-day-header">
+                                            Qui
+                                        </div>
+                                        <div class="calendar-day-header">
+                                            Sex
+                                        </div>
+                                        <div class="calendar-day-header">
+                                            Sab
+                                        </div>
+                                        <div class="calendar-days"></div>
+                                    </div>
+                                </div><input type="hidden" class="selected-date" value="">
+                                <p class="text-xs mt-2" style="color:#888;" id="selected-date-fino"></p>
+                            </div><button class="btn-gold w-full py-3 rounded-full text-sm font-bold mt-4 schedule-btn"
+                                data-name="Abajur Delicado (Fino)" data-price="145" data-signal="72.50"> <i
+                                    data-lucide="calendar-plus"
+                                    style="width:14px;height:14px;display:inline;vertical-align:middle;margin-right:4px;"></i>
+                                Agendar — Sinal R$ 72,50 </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section><!-- GALLERY -->
+        <section id="gallery" style="background:#F2E9E4;">
+            <div class="max-w-6xl mx-auto px-4 py-16 md:py-24">
+                <div class="text-center mb-12">
+                    <p class="text-sm font-semibold tracking-widest uppercase mb-2" style="color:#E07A5F;">Imagens
+                        Disponíveis</p>
+                    <h2 class="font-heading text-3xl md:text-4xl font-bold" style="color:#2B2B2B;">Galeria de Temas</h2>
+                    <p class="mt-3 max-w-lg mx-auto" style="color:#888;">Clique em um tema para ver todas as variações
+                        disponíveis para seu abajur.</p>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4"><button
+                        class="theme-btn rounded-xl overflow-hidden aspect-square flex flex-col items-center justify-center transition hover:shadow-lg hover:scale-105"
+                        data-theme="Paisagem Natural" style="background: linear-gradient(135deg,#A8DADC,#457B9D);">
+                        <span class="text-3xl">🌿</span>
+                        <p class="text-xs font-bold mt-2 text-white">Paisagem Natural</p>
+                    </button> <button
+                        class="theme-btn rounded-xl overflow-hidden aspect-square flex flex-col items-center justify-center transition hover:shadow-lg hover:scale-105"
+                        data-theme="Flores Tropicais" style="background: linear-gradient(135deg,#FFB4A2,#E07A5F);">
+                        <span class="text-3xl">🌺</span>
+                        <p class="text-xs font-bold mt-2 text-white">Flores Tropicais</p>
+                    </button> <button
+                        class="theme-btn rounded-xl overflow-hidden aspect-square flex flex-col items-center justify-center transition hover:shadow-lg hover:scale-105"
+                        data-theme="Mandalas" style="background: linear-gradient(135deg,#DDB892,#7F5539);"> <span
+                            class="text-3xl">🔮</span>
+                        <p class="text-xs font-bold mt-2 text-white">Mandalas</p>
+                    </button> <button
+                        class="theme-btn rounded-xl overflow-hidden aspect-square flex flex-col items-center justify-center transition hover:shadow-lg hover:scale-105"
+                        data-theme="Animais" style="background: linear-gradient(135deg,#B5E48C,#52B788);"> <span
+                            class="text-3xl">🦋</span>
+                        <p class="text-xs font-bold mt-2 text-white">Animais</p>
+                    </button> <button
+                        class="theme-btn rounded-xl overflow-hidden aspect-square flex flex-col items-center justify-center transition hover:shadow-lg hover:scale-105"
+                        data-theme="Geométrico" style="background: linear-gradient(135deg,#F4C542,#E07A5F);"> <span
+                            class="text-3xl">💎</span>
+                        <p class="text-xs font-bold mt-2 text-white">Geométrico</p>
+                    </button> <button
+                        class="theme-btn rounded-xl overflow-hidden aspect-square flex flex-col items-center justify-center transition hover:shadow-lg hover:scale-105"
+                        data-theme="Abstrato" style="background: linear-gradient(135deg,#C77DFF,#7B2CBF);"> <span
+                            class="text-3xl">🎨</span>
+                        <p class="text-xs font-bold mt-2 text-white">Abstrato</p>
+                    </button> <button
+                        class="theme-btn rounded-xl overflow-hidden aspect-square flex flex-col items-center justify-center transition hover:shadow-lg hover:scale-105"
+                        data-theme="Religioso" style="background: linear-gradient(135deg,#FFD6A5,#F4C542);"> <span
+                            class="text-3xl">✝️</span>
+                        <p class="text-xs font-bold mt-2 text-white">Religioso</p>
+                    </button> <button
+                        class="theme-btn rounded-xl overflow-hidden aspect-square flex flex-col items-center justify-center transition hover:shadow-lg hover:scale-105"
+                        data-theme="Personalizado" style="background: linear-gradient(135deg,#CDB4DB,#FFC8DD);"> <span
+                            class="text-3xl">📸</span>
+                        <p class="text-xs font-bold mt-2 text-white">Personalizado</p>
+                    </button>
+                </div>
+            </div>
+        </section><!-- THEME GALLERY MODAL -->
+        <div id="theme-modal" class="theme-modal">
+            <div class="theme-modal-content"><button class="modal-close-btn" id="close-theme-modal" aria-label="Fechar">
+                    <i data-lucide="x" style="width:24px;height:24px;"></i> </button>
+                <h3 id="theme-modal-title" class="font-heading text-2xl font-bold" style="color:#2B2B2B;">Tema</h3>
+                <p class="text-sm mt-2 mb-2" style="color:#666;">Clique em uma imagem para selecionar</p>
+                <div id="theme-images-grid" class="theme-images-grid"></div>
+            </div>
+        </div><!-- SHOWCASE -->
+        <section id="showcase" style="background:#FFFFFF;">
+            <div class="max-w-6xl mx-auto px-4 py-16 md:py-24">
+                <div class="text-center mb-12">
+                    <p class="text-sm font-semibold tracking-widest uppercase mb-2" style="color:#E07A5F;">Produtos
+                        Prontos</p>
+                    <h2 class="font-heading text-3xl md:text-4xl font-bold" style="color:#2B2B2B;">Nossa Estante</h2>
+                    <p class="mt-3 max-w-lg mx-auto" style="color:#888;">Veja algumas peças prontas disponíveis para
+                        compra imediata.</p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                    <div class="bg-white rounded-2xl overflow-hidden card-hover"
+                        style="border:1px solid #F2E9E4; box-shadow: 0 4px 15px rgba(0,0,0,0.06);">
+                        <div class="h-52 flex items-center justify-center"
+                            style="background: linear-gradient(135deg,#A8DADC,#457B9D);">
+                            <svg width="60" height="90" viewbox="0 0 60 90">
+                                <rect x="15" y="10" width="30" height="65" rx="15" fill="#FFF" opacity="0.4" />
+                                <circle cx="30" cy="8" r="8" fill="#FFF" opacity="0.7" />
+                            </svg>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex items-center justify-between mb-2"><span
+                                    class="text-xs font-bold px-2 py-1 rounded-full"
+                                    style="background:#FFF9E6;color:#F4C542;">Grosso</span> <span
+                                    class="text-xs font-bold" style="color:#52B788;">✓ Disponível</span>
+                            </div>
+                            <h3 class="font-heading font-bold" style="color:#2B2B2B;">Paisagem Natural</h3>
+                            <p class="font-heading text-lg font-bold mt-1" style="color:#E07A5F;">R$ 195,00</p><button
+                                class="btn-gold w-full py-2 rounded-full text-sm font-bold mt-3 add-to-cart-btn"
+                                data-name="Abajur Paisagem (Grosso)" data-price="195"
+                                data-type="pronta-entrega">Comprar</button>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-2xl overflow-hidden card-hover"
+                        style="border:1px solid #F2E9E4; box-shadow: 0 4px 15px rgba(0,0,0,0.06);">
+                        <div class="h-52 flex items-center justify-center"
+                            style="background: linear-gradient(135deg,#FFB4A2,#E07A5F);">
+                            <svg width="45" height="90" viewbox="0 0 45 90">
+                                <rect x="10" y="10" width="25" height="65" rx="12" fill="#FFF" opacity="0.4" />
+                                <circle cx="22" cy="8" r="7" fill="#FFF" opacity="0.7" />
+                            </svg>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex items-center justify-between mb-2"><span
+                                    class="text-xs font-bold px-2 py-1 rounded-full"
+                                    style="background:#FFF5F0;color:#E07A5F;">Fino</span> <span
+                                    class="text-xs font-bold" style="color:#52B788;">✓ Disponível</span>
+                            </div>
+                            <h3 class="font-heading font-bold" style="color:#2B2B2B;">Flores Tropicais</h3>
+                            <p class="font-heading text-lg font-bold mt-1" style="color:#E07A5F;">R$ 145,00</p><button
+                                class="btn-gold w-full py-2 rounded-full text-sm font-bold mt-3 add-to-cart-btn"
+                                data-name="Abajur Flores (Fino)" data-price="145"
+                                data-type="pronta-entrega">Comprar</button>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-2xl overflow-hidden card-hover"
+                        style="border:1px solid #F2E9E4; box-shadow: 0 4px 15px rgba(0,0,0,0.06);">
+                        <div class="h-52 flex items-center justify-center"
+                            style="background: linear-gradient(135deg,#DDB892,#7F5539);">
+                            <svg width="60" height="90" viewbox="0 0 60 90">
+                                <rect x="15" y="10" width="30" height="65" rx="15" fill="#FFF" opacity="0.4" />
+                                <circle cx="30" cy="8" r="8" fill="#FFF" opacity="0.7" />
+                            </svg>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex items-center justify-between mb-2"><span
+                                    class="text-xs font-bold px-2 py-1 rounded-full"
+                                    style="background:#FFF9E6;color:#F4C542;">Grosso</span> <span
+                                    class="text-xs font-bold" style="color:#52B788;">✓ Disponível</span>
+                            </div>
+                            <h3 class="font-heading font-bold" style="color:#2B2B2B;">Mandalas</h3>
+                            <p class="font-heading text-lg font-bold mt-1" style="color:#E07A5F;">R$ 195,00</p><button
+                                class="btn-gold w-full py-2 rounded-full text-sm font-bold mt-3 add-to-cart-btn"
+                                data-name="Abajur Mandalas (Grosso)" data-price="195"
+                                data-type="pronta-entrega">Comprar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section><!-- CONTACT -->
+        <section id="contact" style="background:#F2E9E4;">
+            <div class="max-w-6xl mx-auto px-4 py-16 md:py-24">
+                <div class="text-center mb-12">
+                    <p class="text-sm font-semibold tracking-widest uppercase mb-2" style="color:#E07A5F;">Fale Conosco
+                    </p>
+                    <h2 class="font-heading text-3xl md:text-4xl font-bold" style="color:#2B2B2B;">Entre em Contato</h2>
+                </div>
+                <div class="max-w-md mx-auto bg-white rounded-2xl p-8 shadow-lg">
+                    <form id="contact-form" class="space-y-4">
+                        <div><label for="name-input" class="text-sm font-bold block mb-1"
+                                style="color:#2B2B2B;">Nome</label> <input id="name-input" type="text"
+                                placeholder="Seu nome" class="w-full p-3 rounded-lg border text-sm"
+                                style="border-color:#F2E9E4;" required>
+                        </div>
+                        <div><label for="phone-input" class="text-sm font-bold block mb-1"
+                                style="color:#2B2B2B;">WhatsApp</label> <input id="phone-input" type="tel"
+                                placeholder="(00) 00000-0000" class="w-full p-3 rounded-lg border text-sm"
+                                style="border-color:#F2E9E4;" required>
+                        </div>
+                        <div><label for="msg-input" class="text-sm font-bold block mb-1"
+                                style="color:#2B2B2B;">Mensagem</label> <textarea id="msg-input" rows="3"
+                                placeholder="Sua mensagem..." class="w-full p-3 rounded-lg border text-sm"
+                                style="border-color:#F2E9E4;"></textarea>
+                        </div><button type="submit" class="btn-gold w-full py-3 rounded-full font-bold text-sm">Enviar
+                            Mensagem</button>
+                    </form>
+                    <div id="contact-success" class="hidden text-center py-6"><span class="text-4xl">✨</span>
+                        <p class="font-heading text-xl font-bold mt-3" style="color:#2B2B2B;">Mensagem enviada!</p>
+                        <p class="text-sm mt-1" style="color:#888;">Entraremos em contato em breve.</p>
+                    </div>
+                </div>
+            </div>
+        </section><!-- FOOTER -->
+        <footer style="background:#2B2B2B;">
+            <div class="max-w-6xl mx-auto px-4 py-10">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div class="text-center md:text-left">
+                        <p class="font-heading text-xl font-bold text-white"><span style="color:#F4C542;">✦</span> Arte
+                            na Luz</p>
+                        <p class="text-sm mt-1" style="color:#999;">Iluminando com arte e carinho</p>
+                    </div>
+                    <div class="flex gap-6 text-sm"><a href="#home" style="color:#F4C542;"
+                            class="hover:underline">Início</a> <a href="#products" style="color:#F4C542;"
+                            class="hover:underline">Produtos</a> <a href="#gallery" style="color:#F4C542;"
+                            class="hover:underline">Galeria</a> <a href="#contact" style="color:#F4C542;"
+                            class="hover:underline">Contato</a> <a href="https://wa.me/5517991658358" target="_blank"
+                            rel="noopener noreferrer" style="color:#F4C542;" class="hover:underline">WhatsApp</a>
+                    </div>
+                </div>
+                <div class="border-t mt-6 pt-6 text-center" style="border-color:#444;">
+                    <p id="footer-text" class="text-xs" style="color:#999;">© 2024 Arte na Luz — Todos os direitos
+                        reservados. Feito com ♥ e arte.</p>
+                </div>
+            </div>
+        </footer><!-- CART -->
+        <div id="cart-overlay" class="fixed inset-0 z-50 hidden">
+            <div class="overlay absolute inset-0" id="cart-overlay-bg"></div>
+            <div class="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl flex flex-col"
+                style="animation: slideIn 0.3s ease;">
+                <div class="p-5 flex items-center justify-between border-b" style="border-color:#F2E9E4;">
+                    <h3 class="font-heading text-xl font-bold" style="color:#2B2B2B;"><i data-lucide="shopping-bag"
+                            style="width:20px;height:20px;display:inline;vertical-align:middle;margin-right:6px;color:#F4C542;"></i>
+                        Meu Carrinho</h3><button id="close-cart" class="p-2 rounded-full hover:bg-gray-100"
+                        aria-label="Fechar carrinho"> <i data-lucide="x"
+                            style="width:20px;height:20px;color:#2B2B2B;"></i> </button>
+                </div>
+                <div id="cart-items" class="flex-1 overflow-auto p-5">
+                    <div id="cart-empty" class="text-center py-12"><span class="text-4xl">🛒</span>
+                        <p class="mt-3 font-bold" style="color:#2B2B2B;">Carrinho vazio</p>
+                        <p class="text-sm mt-1" style="color:#888;">Adicione produtos para começar!</p>
+                    </div>
+                    <div id="cart-list"></div>
+                </div>
+                <div id="cart-footer" class="hidden border-t p-5" style="border-color:#F2E9E4;">
+                    <div class="flex justify-between items-center mb-4"><span class="font-bold"
+                            style="color:#2B2B2B;">Total:</span> <span id="cart-total"
+                            class="font-heading text-2xl font-bold" style="color:#E07A5F;">R$ 0,00</span>
+                    </div><button id="checkout-btn" class="btn-gold w-full py-3 rounded-full font-bold text-sm"> <i
+                            data-lucide="check-circle"
+                            style="width:16px;height:16px;display:inline;vertical-align:middle;margin-right:4px;"></i>
+                        Finalizar Pedido </button>
+                </div>
+            </div>
+        </div><!-- CHECKOUT MODAL -->
+        <div id="checkout-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+            <div class="overlay absolute inset-0" id="checkout-overlay-bg"></div>
+            <div class="relative bg-white rounded-2xl max-w-lg w-full max-h-full overflow-auto p-6 shadow-2xl"><button
+                    id="close-checkout" class="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100"
+                    aria-label="Fechar"> <i data-lucide="x" style="width:20px;height:20px;color:#2B2B2B;"></i> </button>
+                <div id="checkout-form-area">
+                    <h3 class="font-heading text-2xl font-bold mb-1" style="color:#2B2B2B;">Finalizar Pedido</h3>
+                    <p class="text-sm mb-6" style="color:#888;">Preencha seus dados para concluir</p>
+                    <div id="checkout-summary" class="mb-4 p-4 rounded-xl" style="background:#FFF9E6;"></div>
+                    <form id="checkout-form" class="space-y-3">
+                        <div><label for="co-name" class="text-sm font-bold block mb-1" style="color:#2B2B2B;">Nome
+                                completo</label> <input id="co-name" type="text"
+                                class="w-full p-3 rounded-lg border text-sm" style="border-color:#F2E9E4;" required>
+                        </div>
+                        <div><label for="co-phone" class="text-sm font-bold block mb-1"
+                                style="color:#2B2B2B;">WhatsApp</label> <input id="co-phone" type="tel"
+                                class="w-full p-3 rounded-lg border text-sm" style="border-color:#F2E9E4;" required>
+                        </div>
+                        <div><label for="co-address" class="text-sm font-bold block mb-1"
+                                style="color:#2B2B2B;">Endereço de entrega</label> <input id="co-address" type="text"
+                                class="w-full p-3 rounded-lg border text-sm" style="border-color:#F2E9E4;" required>
+                        </div>
+                        <div><label for="co-notes" class="text-sm font-bold block mb-1"
+                                style="color:#2B2B2B;">Observações</label> <textarea id="co-notes" rows="2"
+                                class="w-full p-3 rounded-lg border text-sm" style="border-color:#F2E9E4;"
+                                placeholder="Alguma observação especial?"></textarea>
+                        </div><button type="submit"
+                            class="btn-gold w-full py-3 rounded-full font-bold text-sm mt-2">Confirmar Pedido ✨</button>
+                    </form>
+                </div>
+                <div id="checkout-success" class="hidden text-center py-8"><span class="text-5xl">🎉</span>
+                    <h3 class="font-heading text-2xl font-bold mt-4" style="color:#2B2B2B;">Pedido Confirmado!</h3>
+                    <p class="text-sm mt-2" style="color:#888;">Entraremos em contato pelo WhatsApp para combinar o
+                        pagamento e a entrega.</p><button id="back-to-shop"
+                        class="btn-gold px-8 py-3 rounded-full font-bold text-sm mt-6">Voltar à Loja</button>
+                </div>
+            </div>
+        </div><!-- TOAST -->
+        <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 hidden">
+            <div class="bg-white rounded-full shadow-xl px-6 py-3 flex items-center gap-3 border"
+                style="border-color:#F4C542;"><i data-lucide="check-circle"
+                    style="width:18px;height:18px;color:#52B788;"></i> <span id="toast-text" class="text-sm font-bold"
+                    style="color:#2B2B2B;"></span>
+            </div>
+        </div>
+    </div>
+    <script>
+        // ============================================
+        // CALENDÁRIO - Funcionalidades de data
+        // ============================================
+        class Calendar {
+            constructor(container) {
+                this.container = container;
+                this.currentDate = new Date();
+                this.selectedDate = null;
+                this.minDate = new Date();
+                this.minDate.setDate(this.minDate.getDate() + 7);
+                this.init();
+            }
+            init() {
+                this.renderCalendar();
+                this.attachEventListeners();
+            }
+            attachEventListeners() {
+                this.container.querySelector('.prev-month').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.currentDate.setMonth(this.currentDate.getMonth() - 1);
+                    this.renderCalendar();
+                });
+                this.container.querySelector('.next-month').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.currentDate.setMonth(this.currentDate.getMonth() + 1);
+                    this.renderCalendar();
+                });
+            }
+            renderCalendar() {
+                const year = this.currentDate.getFullYear();
+                const month = this.currentDate.getMonth();
+                const firstDay = new Date(year, month, 1).getDay();
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+                const monthName = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'][month];
+                this.container.querySelector('.calendar-month-year').textContent = `${monthName} ${year}`;
+                const daysContainer = this.container.querySelector('.calendar-days');
+                daysContainer.innerHTML = '';
+                for (let i = 0; i < firstDay; i++) {
+                    daysContainer.appendChild(document.createElement('div'));
+                }
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const dayEl = document.createElement('button');
+                    dayEl.type = 'button';
+                    dayEl.className = 'calendar-day';
+                    dayEl.textContent = day;
+                    const date = new Date(year, month, day);
+                    if (date < this.minDate) {
+                        dayEl.classList.add('disabled');
+                    } else {
+                        dayEl.classList.add('available');
+                        dayEl.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            this.selectDate(date);
+                        });
+                    }
+                    if (this.selectedDate && date.toDateString() === this.selectedDate.toDateString()) {
+                        dayEl.classList.add('selected');
+                    }
+                    daysContainer.appendChild(dayEl);
+                }
+                lucide.createIcons();
+            }
+            selectDate(date) {
+                this.selectedDate = date;
+                this.renderCalendar();
+                this.updateDisplay();
+            }
+            updateDisplay() {
+                if (this.selectedDate) {
+                    const dateStr = this.selectedDate.toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                    const id = this.container.dataset.calendar === 'grosso-agendamento' ? 'selected-date-grosso' : 'selected-date-fino';
+                    const display = document.getElementById(id);
+                    if (display) {
+                        display.textContent = `✓ Data selecionada: ${dateStr.charAt(0).toUpperCase() + dateStr.slice(1)}`;
+                        display.style.color = '#52B788';
+                        display.style.fontWeight = '700';
+                    }
+                    this.container.parentElement.querySelector('.selected-date').value = this.selectedDate.toISOString().split('T')[0];
+                }
+            }
+        }
+        document.querySelectorAll('.calendar-container').forEach(container => { new Calendar(container); });
+
+        // ============================================
+        // GALERIA - Modal de temas e imagens
+        // ============================================
+        const themeImages = {
+            'Paisagem Natural': ['🏔️ Montanha', '🌲 Floresta', '🏖️ Praia', '🌅 Pôr do Sol', '🌾 Campo', '🏞️ Vale'],
+            'Flores Tropicais': ['🌸 Rosa', '🌺 Hibisco', '🌻 Girassol', '🌼 Margarida', '🌷 Tulipa', '🏵️ Flores'],
+            'Mandalas': ['🔵 Azul', '🟣 Roxa', '🟡 Amarela', '🟠 Laranja', '🟢 Verde', '⚫ Preta'],
+            'Animais': ['🦋 Borboleta', '🦅 Aguia', '🦁 Leão', '🦒 Girafa', '🐯 Tigre', '🦚 Pavão'],
+            'Geométrico': ['⬛ Quadrados', '🔺 Triângulos', '⭕ Círculos', '💠 Hexágonos', '✖️ Cruz', '✦ Estrela'],
+            'Abstrato': ['🎨 Pincelada', '🌀 Espiral', '〰️ Ondas', '⚡ Raios', '🌊 Fluido', '💫 Cósmico'],
+            'Religioso': ['✝️ Cruz', '☦️ Ortodoxa', '☪️ Estrela', '✡️ Judaico', '☯️ Yin Yang', '🙏 Mãos'],
+            'Personalizado': ['📷 Sua Foto', '🎯 Seu Desenho', '🖼️ Sua Arte', '📸 Sua Imagem', '✏️ Sua Ideia', '🎭 Sua Criação']
+        };
+        document.querySelectorAll('.theme-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const theme = btn.dataset.theme;
+                const modal = document.getElementById('theme-modal');
+                const title = document.getElementById('theme-modal-title');
+                const grid = document.getElementById('theme-images-grid');
+                title.textContent = theme;
+                grid.innerHTML = '';
+                themeImages[theme].forEach(image => {
+                    const item = document.createElement('button');
+                    item.className = 'theme-image-item';
+                    item.textContent = image;
+                    item.type = 'button';
+                    item.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        showToast(`Tema "${image}" selecionado!`);
+                        modal.classList.remove('active');
+                    });
+                    grid.appendChild(item);
+                });
+                modal.classList.add('active');
+            });
+        });
+        document.getElementById('close-theme-modal').addEventListener('click', () => {
+            document.getElementById('theme-modal').classList.remove('active');
+        });
+        document.getElementById('theme-modal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('theme-modal')) {
+                document.getElementById('theme-modal').classList.remove('active');
+            }
+        });
+
+        // ============================================
+        // CARRINHO - Gestão de produtos
+        // ============================================
+        let cart = [];
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            document.getElementById('toast-text').textContent = msg;
+            t.classList.remove('hidden');
+            setTimeout(() => t.classList.add('hidden'), 2500);
+        }
+        function updateCart() {
+            const countEl = document.getElementById('cart-count');
+            const listEl = document.getElementById('cart-list');
+            const emptyEl = document.getElementById('cart-empty');
+            const footerEl = document.getElementById('cart-footer');
+            const totalEl = document.getElementById('cart-total');
+            countEl.textContent = cart.length;
+            if (cart.length > 0) {
+                countEl.classList.remove('hidden');
+                emptyEl.classList.add('hidden');
+                footerEl.classList.remove('hidden');
+            } else {
+                countEl.classList.add('hidden');
+                emptyEl.classList.remove('hidden');
+                footerEl.classList.add('hidden');
+            }
+            let total = 0;
+            listEl.innerHTML = '';
+            cart.forEach((item, i) => {
+                total += item.price;
+                const div = document.createElement('div');
+                div.className = 'flex items-center justify-between py-3 border-b';
+                div.style.borderColor = '#F2E9E4';
+                div.innerHTML = `
+          <div class="flex-1">
+            <p class="text-sm font-bold" style="color:#2B2B2B;">${item.name}</p>
+            <p class="text-xs" style="color:#888;">${item.type === 'agendamento' ? '📅 Agendamento — Sinal' : '📦 Pronta entrega'}</p>
+            ${item.deliveryDate ? `<p class="text-xs mt-1" style="color:#52B788;">📦 Entrega: ${item.deliveryDate}</p>` : ''}
+            <p class="text-sm font-bold mt-1" style="color:#E07A5F;">R$ ${item.price.toFixed(2).replace('.', ',')}</p>
+          </div>
+          <button class="remove-item ml-3 p-2 rounded-full hover:bg-red-50 transition" data-index="${i}" aria-label="Remover item">
+            <i data-lucide="trash-2" style="width:16px;height:16px;color:#E07A5F;"></i>
+          </button>
+        `;
+                listEl.appendChild(div);
+            });
+            totalEl.textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+            lucide.createIcons();
+            listEl.querySelectorAll('.remove-item').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    cart.splice(parseInt(btn.dataset.index), 1);
+                    updateCart();
+                });
+            });
+        }
+        function attachAddToCartListeners() {
+            document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+                btn.removeEventListener('click', handleAddToCart);
+                btn.addEventListener('click', handleAddToCart);
+            });
+        }
+        function handleAddToCart(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            cart.push({
+                name: this.dataset.name,
+                price: parseFloat(this.dataset.price),
+                type: this.dataset.type
+            });
+            updateCart();
+            showToast('Produto adicionado ao carrinho!');
+        }
+        attachAddToCartListeners();
+
+        // Schedule buttons
+        function attachScheduleListeners() {
+            document.querySelectorAll('.schedule-btn').forEach(btn => {
+                btn.removeEventListener('click', handleSchedule);
+                btn.addEventListener('click', handleSchedule);
+            });
+        }
+        function handleSchedule(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const card = this.closest('.bg-white');
+            const select = card.querySelector('.schedule-image-select');
+            const selectedDateInput = card.querySelector('.selected-date');
+            if (!select.value) {
+                select.style.borderColor = '#E07A5F';
+                select.focus();
+                return;
+            }
+            select.style.borderColor = '#F2E9E4';
+            if (!selectedDateInput.value) {
+                showToast('Por favor, selecione uma data de entrega!');
+                return;
+            }
+            const deliveryDate = new Date(selectedDateInput.value);
+            const formattedDate = deliveryDate.toLocaleDateString('pt-BR');
+            cart.push({
+                name: this.dataset.name,
+                price: parseFloat(this.dataset.signal),
+                type: 'agendamento',
+                image: select.value,
+                deliveryDate: formattedDate
+            });
+            updateCart();
+            showToast('Agendamento adicionado ao carrinho!');
+            select.value = '';
+            selectedDateInput.value = '';
+            const displayId = card.querySelector('.calendar-container').dataset.calendar === 'grosso-agendamento' ? 'selected-date-grosso' : 'selected-date-fino';
+            document.getElementById(displayId).textContent = '';
+        }
+        attachScheduleListeners();
+
+        // Cart modal
+        document.getElementById('cart-btn').addEventListener('click', () => {
+            document.getElementById('cart-overlay').classList.remove('hidden');
+        });
+        document.getElementById('close-cart').addEventListener('click', () => {
+            document.getElementById('cart-overlay').classList.add('hidden');
+        });
+        document.getElementById('cart-overlay-bg').addEventListener('click', () => {
+            document.getElementById('cart-overlay').classList.add('hidden');
+        });
+
+        // ============================================
+        // MODAL DE CHECKOUT - Finalização de pedido
+        // ============================================
+        document.getElementById('checkout-btn').addEventListener('click', () => {
+            document.getElementById('cart-overlay').classList.add('hidden');
+            document.getElementById('checkout-modal').classList.remove('hidden');
+            const summary = document.getElementById('checkout-summary');
+            let html = '<p class="text-xs font-bold mb-2" style="color:#2B2B2B;">Resumo do Pedido:</p>';
+            let total = 0;
+            cart.forEach(item => {
+                total += item.price;
+                html += `<p class="text-xs" style="color:#555;">• ${item.name} — <strong>R$ ${item.price.toFixed(2).replace('.', ',')}</strong> ${item.type === 'agendamento' ? `<span style="color:#E07A5F;">(sinal)</span><br/><span style="color:#52B788;">📦 Entrega: ${item.deliveryDate}</span>` : ''}</p>`;
+            });
+            html += `<p class="text-sm font-bold mt-2 pt-2 border-t" style="color:#2B2B2B;border-color:#F4C542;">Total: R$ ${total.toFixed(2).replace('.', ',')}</p>`;
+            summary.innerHTML = html;
+        });
+        document.getElementById('checkout-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('co-name').value;
+            const phone = document.getElementById('co-phone').value;
+            const address = document.getElementById('co-address').value;
+            const notes = document.getElementById('co-notes').value;
+            let message = `Olá! Recebi um novo pedido de _*${name}*_\n\n`;
+
+            message += `_*DETALHES DO PEDIDO:*_\n`;
+            let total = 0;
+
+            cart.forEach(item => {
+                total += item.price;
+
+                if (item.type === 'agendamento') {
+                    message += `- _*${item.name}*_\n`;
+                    message += `Imagem: ${item.image}\n`;
+                    message += `Entrega: ${item.deliveryDate}\n`;
+                    message += `Sinal: R$ ${item.price.toFixed(2).replace('.', ',')}\n\n`;
+                } else {
+                    message += `- _*${item.name}*_\n`;
+                    message += `Valor: R$ ${item.price.toFixed(2).replace('.', ',')}\n\n`;
+                }
+            });
+
+            message += `_*TOTAL: R$ ${total.toFixed(2).replace('.', ',')}*_\n\n`;
+
+            message += `_*INFORMAÇÕES DO CLIENTE:*_\n`;
+            message += `Nome: ${name}\n`;
+            message += `WhatsApp: ${phone}\n`;
+            message += `Endereço: ${address}\n`;
+
+            if (notes) {
+                message += `Observações: ${notes}\n`;
+            }
+
+            message += `\n_*Pedido realizado através do site Arte na Luz*_`;
+
+            const whatsappNumber = '';
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+            window.open(whatsappUrl, '_blank');
+            document.getElementById('checkout-form-area').classList.add('hidden');
+            document.getElementById('checkout-success').classList.remove('hidden');
+            cart = [];
+            updateCart();
+        });
+        document.getElementById('close-checkout').addEventListener('click', () => {
+            document.getElementById('checkout-modal').classList.add('hidden');
+            document.getElementById('checkout-form-area').classList.remove('hidden');
+            document.getElementById('checkout-success').classList.add('hidden');
+        });
+        document.getElementById('checkout-overlay-bg').addEventListener('click', () => {
+            document.getElementById('checkout-modal').classList.add('hidden');
+            document.getElementById('checkout-form-area').classList.remove('hidden');
+            document.getElementById('checkout-success').classList.add('hidden');
+        });
+        document.getElementById('back-to-shop').addEventListener('click', () => {
+            document.getElementById('checkout-modal').classList.add('hidden');
+            document.getElementById('checkout-form-area').classList.remove('hidden');
+            document.getElementById('checkout-success').classList.add('hidden');
+        });
+
+        // ============================================
+        // FORMULÁRIO DE CONTATO
+        // ============================================
+        document.getElementById('contact-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            document.getElementById('contact-form').classList.add('hidden');
+            document.getElementById('contact-success').classList.remove('hidden');
+        });
+
+        // ============================================
+        // MENU MOBILE
+        // ============================================
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            document.getElementById('mobile-nav').classList.toggle('hidden');
+        });
+        document.querySelectorAll('#mobile-nav a').forEach(a => {
+            a.addEventListener('click', () => {
+                document.getElementById('mobile-nav').classList.add('hidden');
+            });
+        });
+
+        // ============================================
+        // ABAS - Alternância entre pronta entrega e agendamento
+        // ============================================
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.tab-btn').forEach(b => {
+                    b.classList.remove('tab-active');
+                    b.classList.add('tab-inactive');
+                });
+                this.classList.remove('tab-inactive');
+                this.classList.add('tab-active');
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+                document.getElementById('tab-' + this.dataset.tab).classList.remove('hidden');
+                setTimeout(() => {
+                    attachAddToCartListeners();
+                    attachScheduleListeners();
+                }, 50);
+            });
+        });
+
+        // ============================================
+        // INICIALIZAÇÃO - Carrega ícones Lucide
+        // ============================================
+        lucide.createIcons();
+    </script>
+    <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'9de694b531ccca16',t:'MTc3Mzg2MTQ4NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
+</body>
+
+</html>
